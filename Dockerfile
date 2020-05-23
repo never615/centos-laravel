@@ -41,6 +41,14 @@ RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
   php-common php-curl &&\
   mkdir -p /run/php-fpm
 
+# 配置启用opcache
+RUN echo "opcache.validate_timestamps=0    //生产环境中配置为0" >> /etc/php.d/10-opcache.ini &&\
+  echo "opcache.revalidate_freq=0    //检查脚本时间戳是否有更新时间" >> /etc/php.d/10-opcache.ini &&\
+  echo "opcache.memory_consumption=128    //Opcache的共享内存大小，以M为单位" >> /etc/php.d/10-opcache.ini &&\
+  echo "opcache.interned_strings_buffer=16    //用来存储临时字符串的内存大小，以M为单位" >> /etc/php.d/10-opcache.ini &&\
+  echo "opcache.max_accelerated_files=4000    //Opcache哈希表可以存储的脚本文件数量上限" >> /etc/php.d/10-opcache.ini &&\
+  echo "opcache.fast_shutdown=1         //使用快速停止续发事件" >> /etc/php.d/10-opcache.ini
+
 # Instal Swoole
 RUN yum install -y php-pecl-swoole
 
@@ -87,6 +95,7 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
 
 # Add Scripts
 ADD scripts/start.sh /start.sh
+ADD scripts/cachetool.sh /cachetool.sh
 RUN chmod 755 /start.sh
 
 # copy in code
