@@ -95,7 +95,6 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
 
 # Add Scripts
 ADD scripts/start.sh /start.sh
-ADD scripts/cachetool.sh /cachetool.sh
 RUN chmod 755 /start.sh
 
 # copy in code
