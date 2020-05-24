@@ -44,7 +44,8 @@ RUN yum install -y \
     # (eg. OpenBLAS, Intel MKL, Apple Accelerate framework, etc).
     openblas-devel \
     arpack-devel \
-    lapack-devel
+    lapack-devel \
+    SuperLU-devel
 
 # Install ngixn
 RUN yum install -y nginx &&\
