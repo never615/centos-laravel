@@ -21,19 +21,30 @@ RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backu
 
 # 阿里云epel源
 RUN yum update -y && \
-  # yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
-  # sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
-  # sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
-  yum install -y epel-release
+  yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
+  sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
+  sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
+  # yum install -y epel-release
 
 # 安装其他常用库,从OneinStack抄的
-# RUN yum install -y deltarpm gcc-c++ cmake autoconf libpng-devel \
+RUN yum install -y \
+#   deltarpm gcc-c++ libpng-devel \
 #   freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
 #   bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
 #   libcurl-devel e2fsprogs-devel krb5-devel libidn-devel openssl-devel \
 #   libxslt-devel libicu-devel libevent-devel libtool bison gd-devel \
 #   pcre-devel zip unzip ntpdate sqlite-devel expect expat-devel rsync \
-#   git lsof lrzsz mlocate
+  git cmake autoconf
+#   lsof lrzsz mlocate
+
+# 编译依赖
+RUN yum install -y \
+    # Various matrix decompositions are provided through integration with LAPACK,
+    # or one of its high performance drop-in replacements
+    # (eg. OpenBLAS, Intel MKL, Apple Accelerate framework, etc).
+    openblas-devel \
+    arpack-devel \
+    lapack-devel
 
 # Install ngixn
 RUN yum install -y nginx &&\
