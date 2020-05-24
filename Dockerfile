@@ -21,10 +21,10 @@ RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backu
 
 # 阿里云epel源
 RUN yum update -y && \
-  yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
-  sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
-  sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
-  # yum install -y epel-release
+  # yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
+  # sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
+  # sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
+  yum install -y epel-release
 
 # 安装其他常用库,从OneinStack抄的
 # RUN yum install -y deltarpm gcc-c++ cmake autoconf libpng-devel \
