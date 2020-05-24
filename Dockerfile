@@ -28,14 +28,14 @@ RUN yum update -y && \
 
 # 安装其他常用库,从OneinStack抄的
 RUN yum install -y \
-#   deltarpm gcc-c++ libpng-devel \
-#   freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
-#   bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
-#   libcurl-devel e2fsprogs-devel krb5-devel libidn-devel openssl-devel \
-#   libxslt-devel libicu-devel libevent-devel libtool bison gd-devel \
-#   pcre-devel zip unzip ntpdate sqlite-devel expect expat-devel rsync \
+  deltarpm gcc-c++ libpng-devel \
+  freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
+  bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
+  libcurl-devel e2fsprogs-devel krb5-devel libidn-devel openssl-devel \
+  libxslt-devel libicu-devel libevent-devel libtool bison gd-devel \
+  pcre-devel zip unzip ntpdate sqlite-devel expect expat-devel rsync \
+  lsof lrzsz mlocate \
   git cmake autoconf
-#   lsof lrzsz mlocate
 
 # 编译依赖
 RUN yum install -y \
