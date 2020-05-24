@@ -10,12 +10,12 @@ ENV www_conf /etc/php-fpm.d/www.conf
 ENV php_vars /etc/php.d/docker-vars.ini
 
 # aliyun镜像 阿里云epel源
-# RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
-#   curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo &&\
-#   sed -i -e 's/http:\/\//https:\/\//g' /etc/yum.repos.d/CentOS-Base.repo &&\
-#   # wget-O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo &&\
-#   yum clean all &&\
-#   yum makecache
+RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
+  curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo &&\
+  sed -i -e 's/http:\/\//https:\/\//g' /etc/yum.repos.d/CentOS-Base.repo &&\
+  # wget-O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo &&\
+  yum clean all &&\
+  yum makecache
 
 
 
@@ -42,8 +42,8 @@ RUN yum install -y nginx &&\
 
 
 # Install PHP7.4
-RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
-# RUN yum install -y http://mirrors.tuna.tsinghua.edu.cn/remi//enterprise/remi-release-7.rpm &&\
+# RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
+RUN yum install -y http://mirrors.tuna.tsinghua.edu.cn/remi//enterprise/remi-release-7.rpm &&\
   yum-config-manager --enable remi-php74 &&\
   yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
   php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
