@@ -23,6 +23,15 @@ ENV php_vars /etc/php.d/docker-vars.ini
 RUN yum update -y && \
   yum install -y epel-release
 
+# 安装其他常用库,从OneinStack抄的
+RUN yum install -y deltarpm gcc-c++ cmake autoconf libpng-devel \
+  freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
+  bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
+  libcurl-devel e2fsprogs-devel krb5-devel libidn-devel openssl-devel \
+  libxslt-devel libicu-devel libevent-devel libtool bison gd-devel \
+  pcre-devel zip unzip ntpdate sqlite-devel expect expat-devel rsync \
+  git lsof lrzsz mlocate  
+
 # Install ngixn
 RUN yum install -y nginx &&\
   \
