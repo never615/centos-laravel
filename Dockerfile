@@ -9,7 +9,7 @@ ENV fpm_conf /etc/php-fpm.conf
 ENV www_conf /etc/php-fpm.d/www.conf
 ENV php_vars /etc/php.d/docker-vars.ini
 
-# aliyun镜像 阿里云epel源
+# aliyun镜像
 RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
   curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo &&\
   sed -i -e 's/http:\/\//https:\/\//g' /etc/yum.repos.d/CentOS-Base.repo &&\
@@ -19,9 +19,13 @@ RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backu
 
 
 
-# Add repository and keys
+# epel源
 RUN yum update -y && \
-  yum install -y epel-release
+  \
+  # 阿里云epel源
+  yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
+  sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel*
+  # yum install -y epel-release
 
 # 安装其他常用库,从OneinStack抄的
 # RUN yum install -y deltarpm gcc-c++ cmake autoconf libpng-devel \
