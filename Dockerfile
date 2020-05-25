@@ -26,7 +26,7 @@ RUN yum update -y && \
   sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
   # yum install -y epel-release
 
-# 安装其他常用库,从OneinStack抄的
+# 安装其他常用库
 RUN yum install -y \
   deltarpm gcc-c++ libpng-devel \
   freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
@@ -62,7 +62,7 @@ RUN yum install -y http://mirrors.tuna.tsinghua.edu.cn/remi//enterprise/remi-rel
   yum-config-manager --enable remi-php74 &&\
   yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
   php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
-  php-common php-curl &&\
+  php-common php-curl php-devel&&\
   mkdir -p /run/php-fpm
 
 # 配置启用opcache
