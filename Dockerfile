@@ -56,10 +56,10 @@ RUN yum install -y nginx &&\
   mkdir -p /usr/share/nginx/run
 
 
-# Install PHP7.4
+# Install PHP7.3
 # RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
 RUN yum install -y http://mirrors.tuna.tsinghua.edu.cn/remi//enterprise/remi-release-7.rpm &&\
-  yum-config-manager --enable remi-php74 &&\
+  yum-config-manager --enable remi-php73 &&\
   yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
   php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
   php-common php-curl php-devel&&\
