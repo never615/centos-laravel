@@ -2,8 +2,8 @@ FROM centos:7
 
 LABEL maintainer="never615 <never615@gmail.com>"
 
-ARG REAL_IP_HEADER=1
-ARG RUN_SCRIPTS=1
+ENV REAL_IP_HEADER 1
+ENV RUN_SCRIPTS 1
 
 ENV fpm_conf /etc/php-fpm.conf
 ENV www_conf /etc/php-fpm.d/www.conf
