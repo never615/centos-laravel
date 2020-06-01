@@ -118,6 +118,8 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
 
 
 # Add Scripts
+ADD scripts/laravel.sh /laravel.sh
+RUN chmod 755 /laravel.sh
 ADD scripts/start.sh /start.sh
 RUN chmod 755 /start.sh
 

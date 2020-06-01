@@ -1,5 +1,7 @@
 #!/bin/bash
 
+/laravel.sh
+
 # Enables 404 pages through php index
 if [ ! -z "$PHP_CATCHALL" ]; then
  sed -i 's#try_files $uri $uri/ =404;#try_files $uri $uri/ /index.php?$args;#g' /etc/nginx/conf.d/default.conf
