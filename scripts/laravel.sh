@@ -12,8 +12,8 @@ mkdir -p /etc/supervisor/conf.d
 cp /var/www/html/conf/supervisor/* /etc/supervisor/conf.d
 
 # crontab
-echo '-------- crontab ----------'
-sed -i '$a * * * * * nginx nginx /var/www/html/artisan schedule:run >> /dev/null 2>&1'  /etc/crontab
+# echo '-------- crontab ----------'
+# sed -i '$a * * * * * nginx nginx /var/www/html/artisan schedule:run >> /dev/null 2>&1'  /etc/crontab
 
 # Make writable dirs
 echo '-------- Make writable dirs ----------'
