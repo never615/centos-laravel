@@ -80,7 +80,7 @@ RUN echo "opcache.validate_timestamps=0    //生产环境中配置为0" >> /etc/
 RUN yum install -y php-pecl-swoole
 
 # Install crontabs and supervisor
-RUN yum install -y cronie supervisor
+RUN yum install -y crontabs supervisor
 
 ADD conf/supervisord.conf /etc/supervisord.conf
 
@@ -118,7 +118,13 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
         -e "s/^;listen.backlog = 511$/listen.backlog = -1/" \
         ${www_conf}
 
+#Add your cron file
+ADD cron /etc/cron.d/crontabfile
+RUN chmod 0644 /etc/cron.d/crontabfile && \
+  touch /var/log/cron.log
 
+#This will add it to the cron table (crontab -e)
+# RUN crontab /etc/cron.d/crontabfile
 
 # Add Scripts
 ADD scripts/laravel.sh /laravel.sh
