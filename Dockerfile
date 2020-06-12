@@ -9,6 +9,9 @@ ENV fpm_conf /etc/php-fpm.conf
 ENV www_conf /etc/php-fpm.d/www.conf
 ENV php_vars /etc/php.d/docker-vars.ini
 
+RUN RUN rm -rf /etc/localtime
+RUN ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 # aliyun镜像
 RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
   curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo &&\
@@ -77,7 +80,7 @@ RUN echo "opcache.validate_timestamps=0    //生产环境中配置为0" >> /etc/
 RUN yum install -y php-pecl-swoole
 
 # Install crontabs and supervisor
-RUN yum install -y crontabs supervisor
+RUN yum install -y cronie supervisor
 
 ADD conf/supervisord.conf /etc/supervisord.conf
 

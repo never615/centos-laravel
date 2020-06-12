@@ -9,11 +9,11 @@ touch /var/www/html/storage/logs/worker.log
 touch /var/www/html/storage/logs/horizon.log
 
 mkdir -p /etc/supervisor/conf.d
-cp /var/www/html/conf/supervisor/temp/* /etc/supervisor/conf.d
+cp /var/www/html/conf/supervisor/* /etc/supervisor/conf.d
 
 # crontab
 echo '-------- crontab ----------'
-sed -i '$a * * * * * nginx php /var/www/html/artisan schedule:run >> /dev/null 2>&1'  /etc/crontabs/root
+sed -i '$a * * * * * nginx nginx /var/www/html/artisan schedule:run >> /dev/stdout 2>&1'  /etc/crontab
 
 # Make writable dirs
 echo '-------- Make writable dirs ----------'
