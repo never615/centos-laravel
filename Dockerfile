@@ -9,8 +9,8 @@ ENV fpm_conf /etc/php-fpm.conf
 ENV www_conf /etc/php-fpm.d/www.conf
 ENV php_vars /etc/php.d/docker-vars.ini
 
-RUN RUN rm -rf /etc/localtime
-RUN ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN RUN rm -rf /etc/localtime && \
+   ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 # aliyun镜像
 RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
