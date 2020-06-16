@@ -97,7 +97,7 @@ ADD conf/nginx-site.conf /etc/nginx/conf.d/default.conf
 RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
     echo "upload_max_filesize = 100M"  >> ${php_vars} &&\
     echo "post_max_size = 100M"  >> ${php_vars} &&\
-    echo "memory_limit = 128M"  >> ${php_vars} && \
+    echo "memory_limit = 256M"  >> ${php_vars} && \
     touch /dev/shm/php-fpm.sock && \
     chown nginx:nginx /dev/shm/php-fpm.sock && \
     chmod 666 /dev/shm/php-fpm.sock && \
