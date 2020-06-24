@@ -82,7 +82,9 @@ RUN yum install -y php-pecl-swoole
 # Install crontabs and supervisor
 RUN yum install -y rsyslog crontabs supervisor
 
+#supervisord
 ADD conf/supervisord.conf /etc/supervisord.conf
+COPY conf/supervisord.d/ /etc/supervisord.d/
 
 # Copy our nginx config
 RUN rm -Rf /etc/nginx/nginx.conf
@@ -123,15 +125,9 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
 #Add your cron file
 ADD conf/cron /etc/cron.d/crontabfile
 RUN chmod 0644 /etc/cron.d/crontabfile
-# RUN chmod 0644 /etc/cron.d/crontabfile && \
-  # touch /var/log/cron.log
 
-#This will add it to the cron table (crontab -e)
-# RUN crontab /etc/cron.d/crontabfile
 
 # Add Scripts
-ADD scripts/laravel.sh /laravel.sh
-RUN chmod 755 /laravel.sh
 ADD scripts/start.sh /start.sh
 RUN chmod 755 /start.sh
 
