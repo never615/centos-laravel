@@ -84,7 +84,8 @@ RUN yum install -y rsyslog crontabs supervisor
 
 #supervisord
 ADD conf/supervisord.conf /etc/supervisord.conf
-ADD conf/supervisord.d/laravel-queue.ini /etc/supervisord.d/laravel-queue.ini
+# ADD conf/supervisord.d/laravel-queue.ini /etc/supervisord.d/laravel-queue.ini
+COPY conf/supervisord.d/ /etc/supervisord.d/
 
 # Copy our nginx config
 RUN rm -Rf /etc/nginx/nginx.conf
