@@ -9,9 +9,7 @@ echo '-------- supervisor ----------'
 touch /var/www/html/storage/logs/worker.log
 touch /var/www/html/storage/logs/horizon.log
 
-# mkdir -p /etc/supervisor/conf.d
-# cp /var/www/html/conf/supervisor/* /etc/supervisor/conf.d
-cp /var/www/html/conf/supervisor/* /etc/supervisord.d
+# cp /var/www/html/conf/supervisor/* /etc/supervisord.d
 
 # crontab
 # echo '-------- crontab ----------'
