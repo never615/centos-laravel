@@ -101,7 +101,7 @@ ADD conf/nginx-site.conf /etc/nginx/conf.d/default.conf
 RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
     echo "upload_max_filesize = 100M"  >> ${php_vars} &&\
     echo "post_max_size = 100M"  >> ${php_vars} &&\
-    echo "memory_limit = 256M"  >> ${php_vars} && \
+    echo "memory_limit = -1"  >> ${php_vars} && \
     touch /dev/shm/php-fpm.sock && \
     chown nginx:nginx /dev/shm/php-fpm.sock && \
     chmod 666 /dev/shm/php-fpm.sock && \
@@ -122,6 +122,14 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
         -e "s/^;listen.backlog = 511$/listen.backlog = -1/" \
         ${www_conf}
 
+RUN cd $HOME \
+      && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+      && php composer-setup.php \
+      && php -r "unlink('composer-setup.php');" \
+      && mv composer.phar /usr/local/bin/composer \
+      && /usr/local/bin/composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
+      && /usr/local/bin/composer global require hirak/prestissimo
+
 
 
 #Add your cron file
@@ -136,6 +144,8 @@ RUN chmod 755 /start.sh
 # copy in code
 ADD src/ /var/www/html/
 ADD errors/ /var/www/errors
+
+
 
 EXPOSE 80
 
