@@ -65,7 +65,8 @@ RUN yum install -y http://mirrors.tuna.tsinghua.edu.cn/remi//enterprise/remi-rel
   yum-config-manager --enable remi-php73 &&\
   yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
   php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
-  php-common php-curl php-devel php-bcmath &&\
+  php-common php-curl php-devel php-bcmath php-pecl-mongodb php-nette-tokenizer \
+  php-process php-pecl-zip &&\
   mkdir -p /run/php-fpm
 
 # 配置启用opcache
