@@ -144,17 +144,18 @@ RUN yum install -y subversion gcc gcc-c++ make chrpath redhat-lsb-core re2c &&\
     cp -v out.gn/library/lib*.so out.gn/library/*_blob.bin out.gn/library/icudtl.dat /opt/v8/lib/ &&\
     cp -vR include/* /opt/v8/include/ &&\
     # Update shared libraries when needed
-    /sbin/ldconfig &&\
-    # ---- php-v8js
-    cd /usr/local/src &&\
-    git clone https://github.com/phpv8/v8js.git &&\
-    cd v8js &&\
-    phpize &&\
-    ./configure --with-v8js=/opt/v8 LDFLAGS="-lstdc++" &&\
-    make -B &&\
-    make test &&\
-    make install &&\
-    sed -i '$a extension=v8js.so'  /etc/php.ini
+    /sbin/ldconfig
+    # /sbin/ldconfig &&\
+    # # ---- php-v8js
+    # cd /usr/local/src &&\
+    # git clone https://github.com/phpv8/v8js.git &&\
+    # cd v8js &&\
+    # phpize &&\
+    # ./configure --with-v8js=/opt/v8 LDFLAGS="-lstdc++" &&\
+    # make -B &&\
+    # make test &&\
+    # make install &&\
+    # sed -i '$a extension=v8js.so'  /etc/php.ini
 
 
 #Add your cron file
