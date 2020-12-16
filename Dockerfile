@@ -124,7 +124,7 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
 
 
 # phpv8 v8js https://github.com/phpv8/v8js/wiki/Installing-on-CentOS-7-x64---PHP-7.3
-RUN yum install subversion gcc gcc-c++ make chrpath redhat-lsb-core re2c &&\
+RUN yum install -y subversion gcc gcc-c++ make chrpath redhat-lsb-core re2c &&\
     # ---- v8js
     # Add depot_tools
     cd /usr/local &&\
