@@ -3,9 +3,22 @@ FROM registry.cn-shenzhen.aliyuncs.com/never615/centos-laravel:aliyun
 
 # phpv8 v8js https://github.com/phpv8/v8js/wiki/Installing-on-CentOS-7-x64---PHP-7.3
 RUN yum install -y subversion gcc gcc-c++ make chrpath redhat-lsb-core re2c
-    # ---- v8js
-    # Add depot_tools
+
+# Building a recent c++ compiler
+RUN yum install -y bzip2 &&\
+    cd /usr/local/src &&\
+    wget https://www.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-8.3.0/gcc-8.3.0.tar.gz &&\
+    tar zxf gcc-8.3.0.tar.gz &&\
+    cd gcc-8.3.0/ &&\
+    ./contrib/download_prerequisites &&\
+    ./configure --disable-multilib --enable-languages=c,c++ &&\
+    make &&\
+    make install &&\
+    export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/usr/local/lib64:/usr/lib64
+
+# ---- v8js
 RUN cd /usr/local &&\
+# Add depot_tools
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git &&\
     export PATH=`pwd`/depot_tools:"$PATH" &&\
     # Build our v8 version
@@ -23,7 +36,8 @@ RUN cd /usr/local &&\
     cp -vR include/* /opt/v8/include/ &&\
     # Update shared libraries when needed
     /sbin/ldconfig
-    # ---- php-v8js
+
+# ---- php-v8js
 RUN cd /usr/local/src &&\
     git clone https://github.com/phpv8/v8js.git &&\
     cd v8js &&\
