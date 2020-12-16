@@ -5,7 +5,7 @@ FROM registry.cn-shenzhen.aliyuncs.com/never615/centos-laravel:aliyun
 RUN yum install -y subversion gcc gcc-c++ make chrpath redhat-lsb-core re2c
 
 # Building a recent c++ compiler
-RUN yum install -y bzip2 &&\
+RUN yum install -y bzip2 wget &&\
     cd /usr/local/src &&\
     wget https://www.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-8.3.0/gcc-8.3.0.tar.gz &&\
     tar zxf gcc-8.3.0.tar.gz &&\
