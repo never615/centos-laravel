@@ -94,7 +94,7 @@ cp /var/www/html/conf/supervisor/* /etc/supervisord.d
 echo '-------- Make writable dirs ----------'
 chown -R nginx /var/www/html/storage
 chgrp -R nginx /var/www/html/storage
-chgrp -R 777 /var/www/html/storage
+chmod -R 777 /var/www/html/storage
 
 
 echo '-------- laravel command ----------'
