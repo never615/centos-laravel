@@ -108,6 +108,11 @@ php artisan config:cache
 # Execute artisan optimize
 php artisan optimize
 
+echo '-------- Make writable dirs2 ----------'
+chown -R nginx /var/www/html/storage
+chgrp -R nginx /var/www/html/storage
+chmod -R 777 /var/www/html/storage
+
 # migrate
 php artisan migrate --force
 
