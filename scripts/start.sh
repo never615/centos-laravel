@@ -90,11 +90,14 @@ cp /var/www/html/conf/supervisor/* /etc/supervisord.d
 # echo '-------- crontab ----------'
 # sed -i '$a * * * * * nginx nginx /var/www/html/artisan schedule:run >> /dev/null 2>&1'  /etc/crontab
 
+echo '-------- Make dirs ----------'
+mkdir /var/www/html/storage/framework/cache/data
+
 # Make writable dirs
 echo '-------- Make writable dirs ----------'
 chown -R nginx /var/www/html/storage
 chgrp -R nginx /var/www/html/storage
-chgrp -R 777 /var/www/html/storage
+chmod -R 777 /var/www/html/storage
 
 
 echo '-------- laravel command ----------'
@@ -107,6 +110,11 @@ php artisan config:cache
 
 # Execute artisan optimize
 php artisan optimize
+
+echo '-------- Make writable dirs2 ----------'
+chown -R nginx /var/www/html/storage
+chgrp -R nginx /var/www/html/storage
+chmod -R 777 /var/www/html/storage
 
 # migrate
 php artisan migrate --force
