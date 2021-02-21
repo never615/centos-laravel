@@ -81,7 +81,7 @@ pwd
 # supervisor
 echo '-------- supervisor ----------'
 
-touch /var/www/html/storage/logs/worker.log
+# touch /var/www/html/storage/logs/worker.log
 touch /var/www/html/storage/logs/horizon.log
 
 cp /var/www/html/conf/supervisor/* /etc/supervisord.d
