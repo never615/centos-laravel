@@ -141,6 +141,9 @@ RUN chmod 0644 /etc/cron.d/crontabfile
 ADD scripts/start.sh /start.sh
 RUN chmod 755 /start.sh
 
+ADD scripts/horizon_exist.sh /horizon_exist.sh
+RUN chmod 755 /horizon_exist.sh
+
 # copy in code
 ADD src/ /var/www/html/
 ADD errors/ /var/www/errors
