@@ -127,8 +127,7 @@ RUN cd $HOME \
       && php composer-setup.php \
       && php -r "unlink('composer-setup.php');" \
       && mv composer.phar /usr/local/bin/composer \
-      && /usr/local/bin/composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-      && /usr/local/bin/composer global require hirak/prestissimo
+      && /usr/local/bin/composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
 
 
