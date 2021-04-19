@@ -60,8 +60,12 @@ RUN yum install -y nginx &&\
 
 
 # Install PHP7.3
-# RUN yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
-RUN yum install -y http://mirrors.tuna.tsinghua.edu.cn/remi//enterprise/remi-release-7.rpm &&\
+# RUN yum install -y https://mirrors.tuna.tsinghua.edu.cn/remi/enterprise/remi-release-7.rpm &&\
+# RUN yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
+RUN yum install -y https://mirrors.aliyun.com/remi/enterprise/remi-release-7.rpm &&\
+  sed -i  's/https*:\/\/rpms.remirepo.net/https:\/\/mirrors.aliyun.com\/remi/g'  /etc/yum.repos.d/remi* &&\
+  sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/remi* &&\
+  sed -i 's|^mirrorlist|#mirrorlist|' /etc/yum.repos.d/remi* &&\
   yum-config-manager --enable remi-php73 &&\
   yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
   php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
