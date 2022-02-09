@@ -40,6 +40,9 @@ RUN yum install -y \
   lsof lrzsz mlocate \
   git cmake autoconf
 
+# 安装ifconfig
+Run yum install -y net-tools
+
 # 编译依赖
 RUN yum install -y \
     # Various matrix decompositions are provided through integration with LAPACK,
