@@ -119,7 +119,6 @@ chmod -R 777 /var/www/html/storage
 # migrate
 php artisan migrate --force
 
-
 php artisan storage:link
 
 #opcache
