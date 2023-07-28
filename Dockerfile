@@ -73,7 +73,7 @@ RUN yum install -y https://mirrors.aliyun.com/remi/enterprise/remi-release-7.rpm
   yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
   php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
   php-common php-curl php-devel php-bcmath php-pecl-mongodb php-nette-tokenizer \
-  php-process php-pecl-zip &&\
+  php-process php-pecl-zip php-gmp &&\
   mkdir -p /run/php-fpm
 
 # 配置启用opcache
