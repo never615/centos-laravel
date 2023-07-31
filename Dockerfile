@@ -12,21 +12,35 @@ ENV php_vars /etc/php.d/docker-vars.ini
 RUN rm -rf /etc/localtime && \
    ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+RUN  yum install -y epel-release  && \
+sed -e 's!^metalink=!#metalink=!g' \
+    -e 's!^#baseurl=!baseurl=!g' \
+    -e 's!https\?://download\.fedoraproject\.org/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
+    -e 's!https\?://download\.example/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
+    -i /etc/yum.repos.d/epel*.repo
+
 # aliyun镜像
-RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
-  curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo &&\
-  sed -i -e 's/http:\/\//https:\/\//g' /etc/yum.repos.d/CentOS-Base.repo &&\
-  # wget-O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo &&\
-  yum clean all &&\
-  yum makecache
+# RUN mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup &&\
+# mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup &&\
+# wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo &&\
+# yum clean all &&\
+# yum makecache
+
+# RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup &&\
+#   curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo &&\
+#   sed -i -e 's/http:\/\//https:\/\//g' /etc/yum.repos.d/CentOS-Base.repo &&\
+#   # wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo &&\
+#   yum clean all &&\
+#   yum makecache
 
 
 
 # 阿里云epel源
-RUN yum update -y && \
-  yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
-  sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
-  sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
+# RUN yum update -y && \
+#   yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm && \
+#   sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
+#   sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel* && \
+#   wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
   # yum install -y epel-release
 
 # 安装其他常用库
