@@ -13,14 +13,6 @@ ENV php_vars /etc/php.d/docker-vars.ini
 RUN rm -rf /etc/localtime && \
    ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-# aliyun docker 镜像加速器
-RUN mkdir -p /etc/docker && \
-tee /etc/docker/daemon.json <<-'EOF' \
-{ \
-  "registry-mirrors": ["https://ejyj0nuv.mirror.aliyuncs.com"] \
-} \
-EOF && \
-
 
 # RUN  yum install -y epel-release  && \
 # sed -e 's!^metalink=!#metalink=!g' \
