@@ -12,12 +12,12 @@ ENV php_vars /etc/php.d/docker-vars.ini
 RUN rm -rf /etc/localtime && \
    ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-RUN  yum install -y epel-release  && \
-sed -e 's!^metalink=!#metalink=!g' \
-    -e 's!^#baseurl=!baseurl=!g' \
-    -e 's!https\?://download\.fedoraproject\.org/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
-    -e 's!https\?://download\.example/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
-    -i /etc/yum.repos.d/epel*.repo
+# RUN  yum install -y epel-release  && \
+# sed -e 's!^metalink=!#metalink=!g' \
+#     -e 's!^#baseurl=!baseurl=!g' \
+#     -e 's!https\?://download\.fedoraproject\.org/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
+#     -e 's!https\?://download\.example/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
+#     -i /etc/yum.repos.d/epel*.repo
 
 # aliyun镜像
 # RUN mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup &&\
@@ -41,7 +41,7 @@ sed -e 's!^metalink=!#metalink=!g' \
 #   sed -i 's|^#baseurl=http://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel* && \
 #   sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel* && \
 #   wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
-  # yum install -y epel-release
+RUN  yum install -y epel-release
 
 # 安装其他常用库
 RUN yum install -y \
