@@ -16,7 +16,7 @@ ENV php_vars_dir /etc/php/8.3/cli/conf.d
 
 #禁用任何交互式提示
 ENV DEBIAN_FRONTEND noninteractive
-ENV SUPERVISOR_PHP_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80"
+# ENV SUPERVISOR_PHP_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80"
 
 
 # modify root password
@@ -27,11 +27,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 
 # 安装其他常用库 lrzsz
-RUN apt-get update &&\
-  apt-get install -y \
-  rsyslog crontabs wget && \
-  dnf clean all && \
-  rm -rf /var/cache/dnf   
+RUN apt-get update \
+    && apt-get install -y rsyslog cron wget \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # RUN dnf install -y \
 #   deltarpm gcc-c++ libpng-devel freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
@@ -107,7 +107,7 @@ COPY conf/supervisord.d/ /etc/supervisord.d/
 
 
 # Install ngixn
-RUN dnf install -y nginx &&\
+RUN apt-get install -y nginx &&\
   # forward request and error logs to docker log collector
   ln -sf /dev/stdout /var/log/nginx/access.log &&\
   ln -sf /dev/stderr /var/log/nginx/error.log &&\
