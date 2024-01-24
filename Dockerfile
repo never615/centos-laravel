@@ -7,6 +7,13 @@ ARG ENV=prod
 ARG PHP_VERSION=8.3
 ARG TZ=Asia/Shanghai
 
+ARG WWWGROUP
+ARG NODE_VERSION=20
+ARG POSTGRES_VERSION=15
+
+WORKDIR /var/www/html
+
+
 ENV REAL_IP_HEADER 1
 ENV RUN_SCRIPTS 1
 ENV php_vars /etc/php/8.3/cli/conf.d/docker-vars.ini
