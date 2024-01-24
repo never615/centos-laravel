@@ -32,36 +32,25 @@ RUN sed -e 's|^mirrorlist=|#mirrorlist=|g' \
         -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
         -i.bak \
         /etc/yum.repos.d/rocky*.repo && \
-    dnf makecache &&\
+        dnf makecache \
+    ;fi && \
     dnf -y update && \
     ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
 
- # 更新软件包
-RUN dnf upgrade --refresh -y
-
-
-# 安装 EPEL 源
-RUN dnf install -y epel-release &&\
-  dnf clean all && \
-  rm -rf /var/cache/dnf 
-
-# 安装其他常用库 lrzsz
+# 安装其他常用库
 RUN dnf install -y \
-  zip rsyslog crontabs supervisor git wget && \
+  deltarpm gcc-c++ libpng-devel \
+  freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
+  bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
+  libcurl-devel e2fsprogs-devel krb5-devel libidn-devel openssl-devel \
+  libxslt-devel libicu-devel libevent-devel libtool bison gd-devel \
+  pcre-devel zip unzip ntpdate sqlite-devel expect expat-devel rsync \
+  lsof lrzsz mlocate \
+  git cmake autoconf net-tools && \
   dnf clean all && \
   rm -rf /var/cache/dnf   
 
-# RUN dnf install -y \
-#   deltarpm gcc-c++ libpng-devel freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
-#   bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
-#   libcurl-devel e2fsprogs-devel krb5-devel libidn-devel openssl-devel \
-#   libxslt-devel libicu-devel libevent-devel libtool bison gd-devel \
-#   pcre-devel zip unzip ntpdate sqlite-devel expect expat-devel rsync \
-#   lsof lrzsz mlocate git cmake autoconf net-tools && \
-#   dnf clean all && \
-#   rm -rf /var/cache/dnf   
-
-# # 编译依赖 
+# # 编译依赖
 # RUN yum install -y \
 #     # Various matrix decompositions are provided through integration with LAPACK,
 #     # or one of its high performance drop-in replacements
@@ -74,17 +63,39 @@ RUN dnf install -y \
 
 
 
-# install php
-#  php-mbstring  php-common php-cli php-xml is already installed
-# php-nette-tokenizer  不维护了不需要了:https://packagist.org/packages/nette/tokenizer
-RUN dnf install -y  http://rpms.remirepo.net/enterprise/remi-release-9.rpm && \
+# install basic command lib
+RUN dnf install -y epel-release.noarch \
+    http://rpms.remirepo.net/enterprise/remi-release-9.rpm && \
     dnf module -y install php:remi-$PHP_VERSION && \
-    dnf -y install php-redis php-soap php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
-        php-pgsql php-opcache php-curl php-devel php-bcmath php-pecl-mongodb  \
-        php-process php-pecl-zip php-gmp php-swoole && \
+    dnf -y install php-redis \
+        php-soap \
+        php-pdo \
+        php-mysqlnd \
+        php-opcache \
+        composer \
+        nginx \
+        cronie && \
     dnf clean all && \
     rm -rf /var/cache/dnf    
 
+
+
+
+
+# Install PHP7.4
+# RUN yum install -y https://mirrors.tuna.tsinghua.edu.cn/remi/enterprise/remi-release-7.rpm &&\
+# RUN yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm &&\
+
+RUN yum install -y https://mirrors.aliyun.com/remi/enterprise/remi-release-7.rpm &&\
+  sed -i  's/https*:\/\/rpms.remirepo.net/https:\/\/mirrors.aliyun.com\/remi/g'  /etc/yum.repos.d/remi* &&\
+  sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/remi* &&\
+  sed -i 's|^mirrorlist|#mirrorlist|' /etc/yum.repos.d/remi* &&\
+  yum-config-manager --enable remi-php74 &&\
+  yum install -y php-fpm php-gd php-mysql php-mysqlnd php-pdo php-mcrypt \
+  php-mbstring php-json php-cli php-xml php-pgsql php-pecl-redis php-opcache \
+  php-common php-curl php-devel php-bcmath php-pecl-mongodb php-nette-tokenizer \
+  php-process php-pecl-zip php-gmp &&\
+  mkdir -p /run/php-fpm
 
 # 配置启用opcache
 RUN echo "opcache.validate_timestamps=0    //生产环境中配置为0" >> /etc/php.d/10-opcache.ini &&\
@@ -94,6 +105,11 @@ RUN echo "opcache.validate_timestamps=0    //生产环境中配置为0" >> /etc/
   echo "opcache.max_accelerated_files=4000    //Opcache哈希表可以存储的脚本文件数量上限" >> /etc/php.d/10-opcache.ini &&\
   echo "opcache.fast_shutdown=1         //使用快速停止续发事件" >> /etc/php.d/10-opcache.ini
 
+# Instal Swoole
+RUN yum install -y php-pecl-swoole
+
+# Install crontabs and supervisor
+RUN yum install -y rsyslog crontabs supervisor
 
 #supervisord
 ADD conf/supervisord.conf /etc/supervisord.conf
@@ -103,6 +119,7 @@ COPY conf/supervisord.d/ /etc/supervisord.d/
 
 # Install ngixn
 RUN dnf install -y nginx &&\
+  \
   # forward request and error logs to docker log collector
   ln -sf /dev/stdout /var/log/nginx/access.log &&\
   ln -sf /dev/stderr /var/log/nginx/error.log &&\
