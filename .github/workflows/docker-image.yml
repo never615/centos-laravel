@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "rocky-build" ]
+    branches: [ "ubuntu" ]
   pull_request:
-    branches: [ "rocky-build" ]
+    branches: [ "ubuntu" ]
 
 jobs:
   get-tags:
@@ -40,4 +40,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/rocky-swoole:latest  
+            ${{ secrets.DOCKERHUB_USERNAME }}/ubuntu-swoole:latest  
