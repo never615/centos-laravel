@@ -1,5 +1,25 @@
 #!/bin/bash
 
+echo '-------- run laravel sail scripts start  ----------'
+
+# if [ ! -z "$WWWUSER" ]; then
+    # usermod -u $WWWUSER sail
+# fi
+
+if [ ! -d /.composer ]; then
+    mkdir /.composer
+fi
+
+chmod -R ugo+rw /.composer
+
+if [ $# -gt 0 ]; then
+    exec gosu $WWWUSER "$@"
+else
+    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+fi
+
+echo '-------- run laravel sail scripts end  ----------'
+
 
 echo '-------- run start scripts start  ----------'
 
@@ -18,25 +38,10 @@ if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
   cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
 fi
 
-# Prevent config files from being filled to infinity by force of stop and restart the container
-lastlinephpconf="$(grep "." /etc/php-fpm.conf | tail -1)"
-if [[ $lastlinephpconf == *"php_flag[display_errors]"* ]]; then
- sed -i '$ d' /etc/php-fpm.conf
-fi
 
-# Display PHP error's or not
-if [[ "$ERRORS" != "1" ]] ; then
- echo php_flag[display_errors] = off >> /etc/php-fpm.d/www.conf
-else
- echo php_flag[display_errors] = on >> /etc/php-fpm.d/www.conf
-fi
 
-# Display Version Details or not
-if [[ "$HIDE_NGINX_HEADERS" == "0" ]] ; then
- sed -i "s/server_tokens off;/server_tokens on;/g" /etc/nginx/nginx.conf
-else
- sed -i "s/expose_php = On/expose_php = Off/g" /etc/php-fpm.conf
-fi
+# sed -i "s/server_tokens off;/server_tokens on;/g" /etc/nginx/nginx.conf
+
 
 # Pass real-ip to logs when behind ELB, etc
 if [[ "$REAL_IP_HEADER" == "1" ]] ; then
@@ -52,28 +57,9 @@ fi
 
 # Display errors in docker logs
 if [ ! -z "$PHP_ERRORS_STDERR" ]; then
-  echo "log_errors = On" >> /etc/php/conf.d/docker-vars.ini
-  echo "error_log = /dev/stderr" >> /etc/php/conf.d/docker-vars.ini
+  echo "log_errors = On" >> ${php_vars}
+  echo "error_log = /dev/stderr" >> ${php_vars}
 fi
-
-# Increase the memory_limit
-if [ ! -z "$PHP_MEM_LIMIT" ]; then
- sed -i "s/memory_limit = 128M/memory_limit = ${PHP_MEM_LIMIT}M/g" /etc/php/conf.d/docker-vars.ini
-fi
-
-# Increase the post_max_size
-if [ ! -z "$PHP_POST_MAX_SIZE" ]; then
- sed -i "s/post_max_size = 100M/post_max_size = ${PHP_POST_MAX_SIZE}M/g" /etc/php/conf.d/docker-vars.ini
-fi
-
-# Increase the upload_max_filesize
-if [ ! -z "$PHP_UPLOAD_MAX_FILESIZE" ]; then
- sed -i "s/upload_max_filesize = 100M/upload_max_filesize= ${PHP_UPLOAD_MAX_FILESIZE}M/g" /etc/php/conf.d/docker-vars.ini
-fi
-
-
-
-
 
 echo '-------- run laravel scripts ----------'
 pwd
