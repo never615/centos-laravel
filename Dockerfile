@@ -30,11 +30,11 @@ RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
 #     dnf -y update && \
 #     ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
 
-# RUN sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-#         -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
-#         -i.bak \
-#         /etc/yum.repos.d/rocky*.repo && \
-#     dnf makecache
+RUN sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+        -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
+        -i.bak \
+        /etc/yum.repos.d/rocky*.repo && \
+    dnf makecache
 
 
  # 更新软件包
