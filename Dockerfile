@@ -40,6 +40,16 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Install ngixn
+# forward request and error logs to docker log collector
+RUN apt-get update &&\
+  apt-get install -y nginx &&\
+  ln -sf /dev/stdout /var/log/nginx/access.log &&\
+  ln -sf /dev/stderr /var/log/nginx/error.log &&\
+  mkdir -p /usr/share/nginx/run &&\
+  apt-get clean &&\
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # RUN dnf install -y \
 #   deltarpm gcc-c++ libpng-devel freetype-devel libxml2 libxml2-devel zlib-devel glib2-devel bzip2 \
 #   bzip2-devel ncurses-devel libaio numactl numactl-libs readline-devel \
@@ -113,12 +123,7 @@ ADD conf/supervisord.conf /etc/supervisord.conf
 COPY conf/supervisord.d/ /etc/supervisord.d/
 
 
-# Install ngixn
-# forward request and error logs to docker log collector
-RUN apt-get install -y nginx &&\
-  ln -sf /dev/stdout /var/log/nginx/access.log &&\
-  ln -sf /dev/stderr /var/log/nginx/error.log &&\
-  mkdir -p /usr/share/nginx/run
+
 
 # Copy our nginx config
 RUN rm -Rf /etc/nginx/nginx.conf
