@@ -40,5 +40,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            rocky-swoole:${{ needs.get-tags.outputs.tags }}
-            rocky-swoole:latest  
+            ${{ secrets.DOCKERHUB_USERNAME }}/rocky-swoole:latest  
