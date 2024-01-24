@@ -17,6 +17,8 @@ ENV php_vars /etc/php.d/docker-vars.ini
 # modify root password
 RUN echo 'root:admin123' | chpasswd
 
+RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+
 # set China image soure if dev environment
 # RUN if [ $ENV = dev ]; then \
 #         sed -e 's|^mirrorlist=|#mirrorlist=|g' \
@@ -28,13 +30,12 @@ RUN echo 'root:admin123' | chpasswd
 #     dnf -y update && \
 #     ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
 
-RUN sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-        -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
-        -i.bak \
-        /etc/yum.repos.d/rocky*.repo && \
-    dnf makecache &&\
-    dnf -y update && \
-    ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+# RUN sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+#         -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
+#         -i.bak \
+#         /etc/yum.repos.d/rocky*.repo && \
+#     dnf makecache
+
 
  # 更新软件包
 RUN dnf upgrade --refresh -y
@@ -47,7 +48,7 @@ RUN dnf install -y epel-release &&\
 
 # 安装其他常用库 lrzsz
 RUN dnf install -y \
-  zip rsyslog crontabs supervisor git wget && \
+  zip rsyslog crontabs supervisor git wget composer && \
   dnf clean all && \
   rm -rf /var/cache/dnf   
 
@@ -142,12 +143,12 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
         -e "s/^;listen.backlog = 511$/listen.backlog = -1/" \
         ${www_conf}
 
-RUN cd $HOME \
-      && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-      && php composer-setup.php \
-      && php -r "unlink('composer-setup.php');" \
-      && mv composer.phar /usr/local/bin/composer \
-      && /usr/local/bin/composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+# RUN cd $HOME \
+#       && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+#       && php composer-setup.php \
+#       && php -r "unlink('composer-setup.php');" \
+#       && mv composer.phar /usr/local/bin/composer \
+#       && /usr/local/bin/composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
 
 
